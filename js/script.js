@@ -46,10 +46,19 @@ let score = 0;
 //Creo un array per memorizzare le bombe
 let bombs = [];
 
+//Creo una variabile per il punteggio massimo
+let maxScore = 0;
+
 // Creo una funzione per aggiornare lo score dell'utente
 const updateScore = () => {
     score++;
     scoreDisplay.textContent = `Punteggio: ${score}`;
+
+    // Controllo se l'utente ha raggiunto il punteggio massimo
+    if (score === maxScore) {
+        alert('Hai vinto! Punteggio massimo raggiunto: ' + score);
+        gridContainer.querySelectorAll('.cell').forEach(cell => cell.classList.add('clicked'));
+    }
 };
 
 // Creo una funzione per generare un numero casuale di bombe, da 1 a 16
@@ -103,6 +112,9 @@ const createGrid = () => {
             alert('Stage non valido, non barare (!!) ed utilizza lo stage Facile, Medio o Difficile.');
             return;
     }
+
+    // Calcolo il punteggio massimo possibile
+    maxScore = cellCount - 16;
 
     // Creo una costante per le 16 bombe
     const bombs = generateBombs(cellCount, 16);
