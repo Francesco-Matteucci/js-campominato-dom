@@ -75,6 +75,7 @@ header button.btn:hover {
 }
 
 .cell.clicked {
+    cursor: not-allowed;
     background-color: #007bff;
     color: #fff;
 }
