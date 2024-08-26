@@ -36,17 +36,17 @@ Buon divertimento e a domani! */
 const gridContainer = document.querySelector('.grid-container');
 const playButton = document.querySelector('button');
 const stageSelect = document.getElementById('stage');
-//Recupero il nuovo elemento dal DOM, score
-const scoreDisplay = document.getElementById('score');
 
+// Recupero il nuovo elemento dal DOM, score
+const scoreDisplay = document.getElementById('score');
 
 // Creo una variabile per inizializzare lo score
 let score = 0;
 
-//Creo un array per memorizzare le bombe
+// Creo un array per memorizzare le bombe
 let bombs = [];
 
-//Creo una variabile per il punteggio massimo
+// Creo una variabile per il punteggio massimo
 let maxScore = 0;
 
 // Creo una funzione per aggiornare lo score dell'utente
@@ -56,34 +56,58 @@ const updateScore = () => {
 
     // Controllo se l'utente ha raggiunto il punteggio massimo
     if (score === maxScore) {
-        alert('Hai vinto! Punteggio massimo raggiunto: ' + score);
-        gridContainer.querySelectorAll('.cell').forEach(cell => cell.classList.add('clicked'));
+
+        // Fine della partita con vittoria da parte dell'utente
+        endGame(true);
     }
 };
 
-// Creo una funzione per generare un numero casuale di bombe, da 1 a 16
+// Creo una funzione per generare un array di numeri casuali univoci per le bombe
 const generateBombs = (max, count) => {
-    const bombs = [];
-    while (bombs.length < count) {
+    const bombsArray = [];
+    while (bombsArray.length < count) {
         const bomb = Math.floor(Math.random() * max) + 1;
-        if (!bombs.includes(bomb)) {
-            bombs.push(bomb);
+        if (!bombsArray.includes(bomb)) {
+            bombsArray.push(bomb);
         }
     }
-    return bombs;
+    return bombsArray;
 };
-// Funzione per creare la griglia
+
+// Creo la funzione per gestire la fine della partita
+const endGame = (isVictory) => {
+
+    // Coloro di rosso tutte le celle bomba
+    gridContainer.querySelectorAll('.cell').forEach((cell, index) => {
+        if (bombs.includes(index + 1)) {
+            cell.classList.add('bomb');
+        }
+    });
+
+    // Mostro il messaggio di fine partita
+    if (isVictory) {
+        console.log(`Hai vinto! Punteggio massimo raggiunto: ${score}`);
+        alert(`Hai vinto! Punteggio massimo raggiunto: ${score}`);
+    } else {
+        console.log(`Hai calpestato una bomba! Punteggio finale: ${score}`);
+        alert(`Hai calpestato una bomba! Punteggio finale: ${score}`);
+    }
+
+    // Blocco la possibilità di cliccare altre celle
+    gridContainer.querySelectorAll('.cell').forEach(cell => cell.classList.add('clicked'));
+};
+
+// Creo la funzione per creare la griglia
 const createGrid = () => {
 
     // Faccio un reset del punteggio a ogni nuova partita
     score = 0;
     scoreDisplay.textContent = `Punteggio: ${score}`;
 
-
     // Rimuovo eventuali classi di griglia precedenti
     gridContainer.classList.remove('cell-10', 'cell-9', 'cell-7');
 
-    // Rimuovo tutto le celle esistenti, prima della creazione di una nuova griglia
+    // Rimuovo tutte le celle esistenti, prima della creazione di una nuova griglia
     gridContainer.innerHTML = '';
 
     // Creo la variabile per recuperare il livello di stage selezionato dall'utente
@@ -92,7 +116,7 @@ const createGrid = () => {
     let cellCount;
     let cellClass;
 
-    // Determino il numero di celle e righe in base allo stage
+    // Determino il numero di celle in base allo stage
     switch (stage) {
         case 'easy':
             cellCount = 100;
@@ -109,15 +133,17 @@ const createGrid = () => {
         default:
             cellCount = 100;
             cellClass = 'cell-10';
-            alert('Stage non valido, non barare (!!) ed utilizza lo stage Facile, Medio o Difficile.');
+            alert('Stage non valido, utilizza lo stage Facile, Medio o Difficile.');
             return;
     }
+    //Numero massimo di bombe
+    maxBomb = 16
 
-    // Calcolo il punteggio massimo possibile
-    maxScore = cellCount - 16;
+    // Calcolo il punteggio massimo possibile da parte dell'utente
+    maxScore = cellCount - maxBomb;
 
-    // Creo una costante per le 16 bombe
-    const bombs = generateBombs(cellCount, 16);
+    // Genero le bombe e le memorizzo nella variabile
+    bombs = generateBombs(cellCount, maxBomb);
 
     // Stampo le bombe generate in console per un controllo
     console.log('Bombe generate:', bombs);
@@ -127,36 +153,37 @@ const createGrid = () => {
 
     // Creo le celle
     for (let i = 1; i <= cellCount; i++) {
+
         // Creo un elemento per la cella
         const cell = document.createElement('div');
         cell.classList.add('cell');
+
         // Aggiungo il numero alle celle
         cell.textContent = i;
-
         // Aggiungo l'event listener alla cella
         cell.addEventListener('click', function () {
+
             // Controllo se la cella è già stata cliccata
             if (!cell.classList.contains('clicked')) {
-                // se la cella contiene una bomba..
+
+                // Se la cella contiene una bomba..
                 if (bombs.includes(i)) {
 
-                    //coloro la cella di rosso
+                    // Coloro la cella di rosso
                     cell.classList.add('bomb');
 
-                    //eseguo un console log e mostro un alert di fine partita
-                    console.log(`Hai calpestato una bomba! Partita terminata.`);
-                    alert('Hai calpestato una bomba! Punteggio finale: ' + score);
-
-                    // Blocco la possibilità all'utente di cliccare su altre celle
-                    gridContainer.querySelectorAll('.cell').forEach(cell => cell.classList.add('clicked'));
+                    // Fine della partita con sconfitta per l'utente
+                    endGame(false);
                 } else {
-                    // Se invece non è cliccata, la coloro di azzurro e aggiorno il punteggio
+
+                    // Se invece non è una bomba, la coloro di azzurro e aggiorno il punteggio
                     cell.classList.add('clicked');
                     updateScore();
                     console.log(`Cella cliccata: ${i}`);
                 }
             }
         });
+
         // Aggiungo la cella alla griglia
         gridContainer.appendChild(cell);
     }
