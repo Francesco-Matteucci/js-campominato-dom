@@ -80,6 +80,10 @@ header button.btn:hover {
     color: #fff;
 }
 
+.cell.bomb {
+    background-color: red;
+}
+
 footer {
     border-top: 2px solid #007bff;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);

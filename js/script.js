@@ -43,6 +43,9 @@ const scoreDisplay = document.getElementById('score');
 // Creo una variabile per inizializzare lo score
 let score = 0;
 
+//Creo un array per memorizzare le bombe
+let bombs = [];
+
 // Creo una funzione per aggiornare lo score dell'utente
 const updateScore = () => {
     score++;
@@ -122,11 +125,24 @@ const createGrid = () => {
         cell.addEventListener('click', function () {
             // Controllo se la cella è già stata cliccata
             if (!cell.classList.contains('clicked')) {
-                // Se non è cliccata, la coloro di azzurro e aggiorno il punteggio
-                cell.classList.add('clicked');
-                updateScore();
-                // Stampo il numero della cella cliccata in console
-                console.log(`Cella cliccata: ${i}`);
+                // se la cella contiene una bomba..
+                if (bombs.includes(i)) {
+
+                    //coloro la cella di rosso
+                    cell.classList.add('bomb');
+
+                    //eseguo un console log e mostro un alert di fine partita
+                    console.log(`Hai calpestato una bomba! Partita terminata.`);
+                    alert('Hai calpestato una bomba! Punteggio finale: ' + score);
+
+                    // Blocco la possibilità all'utente di cliccare su altre celle
+                    gridContainer.querySelectorAll('.cell').forEach(cell => cell.classList.add('clicked'));
+                } else {
+                    // Se invece non è cliccata, la coloro di azzurro e aggiorno il punteggio
+                    cell.classList.add('clicked');
+                    updateScore();
+                    console.log(`Cella cliccata: ${i}`);
+                }
             }
         });
         // Aggiungo la cella alla griglia
