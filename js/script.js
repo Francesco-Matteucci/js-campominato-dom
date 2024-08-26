@@ -49,6 +49,17 @@ const updateScore = () => {
     scoreDisplay.textContent = `Punteggio: ${score}`;
 };
 
+// Creo una funzione per generare un numero casuale di bombe, da 1 a 16
+const generateBombs = (max, count) => {
+    const bombs = [];
+    while (bombs.length < count) {
+        const bomb = Math.floor(Math.random() * max) + 1;
+        if (!bombs.includes(bomb)) {
+            bombs.push(bomb);
+        }
+    }
+    return bombs;
+};
 // Funzione per creare la griglia
 const createGrid = () => {
 
@@ -90,6 +101,12 @@ const createGrid = () => {
             return;
     }
 
+    // Creo una costante per le 16 bombe
+    const bombs = generateBombs(cellCount, 16);
+
+    // Stampo le bombe generate in console per un controllo
+    console.log('Bombe generate:', bombs);
+
     // Aggiungo la classe dello stage appropriato
     gridContainer.classList.add(cellClass);
 
@@ -100,8 +117,6 @@ const createGrid = () => {
         cell.classList.add('cell');
         // Aggiungo il numero alle celle
         cell.textContent = i;
-        // Stampo tutti i numeri della cella per un controllo
-        console.log('Cella numero: ', i);
 
         // Aggiungo l'event listener alla cella
         cell.addEventListener('click', function () {
