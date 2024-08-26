@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campominato Grid</title>
+    <!-- STYLES -->
+    <!-- bootstrap style -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- main style -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <body>
+        <div class="d-flex flex-column min-vh-100">
+            <!-- header di Campo Minato -->
+            <header class="d-flex justify-content-between align-items-center p-3 bg-light">
+                <h1 class="mb-0 ms-4">Campo Minato</h1>
+                <div class="d-flex align-items-center">
+                    <select id="stage" class="form-select me-2">
+                        <option value="easy">Facile</option>
+                        <option value="medium">Medio</option>
+                        <option value="hard">Difficile</option>
+                    </select>
+                    <button class="btn" id="play-button">Play</button>
+                </div>
+            </header>
+            <!-- Contenuto principale -->
+            <main class="container d-flex justify-content-center align-items-center mt-4">
+                <div class="d-flex flex-wrap grid-container">
+                    <!-- Rimossi gli elementi per inserirli dinamicamente tramite js -->
+                </div>
+            </main>
+            <!-- Footer -->
+            <footer class="mt-auto bg-light pt-3">
+                <p class="ms-4">Made with <span class="heart text-danger">&hearts;</span> by <a
+                        href="https://github.com/Francesco-Matteucci/" class="text-decoration-none">Fra Emme</a></p>
+            </footer>
+        </div>
+        <script src="js/script.js"></script>
+    </body>
+
+</html>
